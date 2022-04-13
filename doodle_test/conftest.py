@@ -1,5 +1,6 @@
 import pytest
 
+from doodle_test.apis.calendars_api import CalendarsApi
 from doodle_test.apis.meetings_api import MeetingsApi
 from doodle_test.apis.slots_api import SlotsApi
 from doodle_test.apis.users_api import UsersApi
@@ -33,3 +34,9 @@ def meetings_api(base_url):
     meetings_object = MeetingsApi(base_url)
     yield meetings_object
     meetings_object.delete()
+
+
+@pytest.fixture()
+def calendars_api(base_url):
+    calendars_object = CalendarsApi(base_url)
+    return calendars_object

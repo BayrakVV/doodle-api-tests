@@ -40,7 +40,7 @@ class BaseApi(object):
 
     def get(self):
         request = requests.get(
-            url=f'{self.url}/{self.id}',
+            url=f"{self.url}/{self.id}",
             headers=self.headers
         )
         response, response_body = self.request(request)
@@ -48,7 +48,7 @@ class BaseApi(object):
 
     def delete(self):
         request = requests.delete(
-            url=f'{self.url}/{self.id}',
+            url=f"{self.url}/{self.id}",
             headers=self.headers
         )
         response, response_body = self.request(request)
