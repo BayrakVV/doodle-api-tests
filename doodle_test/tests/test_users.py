@@ -4,8 +4,8 @@ def test_users_create(users_api):
     response, response_body = users_api.create(body)
 
     assert response.status_code == 201
-    assert "id", "name" in response_body
     assert response_body["name"] == name
+    assert response_body["id"] == users_api.id
 
     response, response_body = users_api.get()
 
