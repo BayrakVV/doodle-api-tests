@@ -1,6 +1,8 @@
 def test_users_create(users_api):
     name = "test_user"
-    body = {"name": name}
+    body = {
+        "name": name
+    }
     response, response_body = users_api.create(body)
 
     assert response.status_code == 201
