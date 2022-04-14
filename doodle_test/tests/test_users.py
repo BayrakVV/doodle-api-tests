@@ -46,5 +46,5 @@ def test_users_delete(users_api):
     user = get_entry_from_collection(response_body, users_api.id)
 
     assert response.status_code == 200
-    assert user == "Record not found"
+    assert user == "Entry not found"
 

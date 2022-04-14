@@ -50,5 +50,5 @@ def test_slots_delete(slots_api):
     user = get_entry_from_collection(response_body, slots_api.id)
 
     assert response.status_code == 200
-    assert user == "Record not found"
+    assert user == "Entry not found"
 
