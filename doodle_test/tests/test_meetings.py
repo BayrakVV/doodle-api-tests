@@ -15,10 +15,10 @@ slots_body = {
 
 def test_meetings_post(users_api, slots_api, meetings_api):
     # Prepare data for meetings POST request
-    users_api.create(users_body)
-    slots_api.create(slots_body)
-    user_id = users_api.id
-    slot_id = slots_api.id
+    _, response_body = users_api.create(users_body)
+    user_id = response_body["id"]
+    _, response_body = slots_api.create(slots_body)
+    slot_id = response_body["id"]
 
     # Build meetings POST request body
     meetings_body = {
@@ -35,7 +35,6 @@ def test_meetings_post(users_api, slots_api, meetings_api):
     response, response_body = meetings_api.create(meetings_body)
 
     assert response.status_code == 201
-    assert response_body["id"] == meetings_api.id
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
     assert response_body["title"] == meeting_title
     assert response_body["startAt"] == slot_start_at
@@ -46,10 +45,10 @@ def test_meetings_post(users_api, slots_api, meetings_api):
 
 def test_meetings_get_by_id(users_api, slots_api, meetings_api):
     # Prepare new meeting
-    users_api.create(users_body)
-    slots_api.create(slots_body)
-    user_id = users_api.id
-    slot_id = slots_api.id
+    _, response_body = users_api.create(users_body)
+    user_id = response_body["id"]
+    _, response_body = slots_api.create(slots_body)
+    slot_id = response_body["id"]
     meetings_body = {
         "slotId": slot_id,
         "title": meeting_title,
@@ -60,12 +59,12 @@ def test_meetings_get_by_id(users_api, slots_api, meetings_api):
         ]
     }
     meetings_api.create(meetings_body)
+    meetings_id = response_body["id"]
 
-    # Get meeting by id (id field is automatically assigned to the meeting object after creation)
-    response, response_body = meetings_api.get()
+    # Get meeting by id
+    response, response_body = meetings_api.get(meetings_id)
 
     assert response.status_code == 200
-    assert response_body["id"] == meetings_api.id
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
     assert response_body["title"] == meeting_title
     assert response_body["startAt"] == slot_start_at
@@ -76,10 +75,10 @@ def test_meetings_get_by_id(users_api, slots_api, meetings_api):
 
 def test_meetings_get_all(users_api, slots_api, meetings_api):
     # Prepare new meeting
-    users_api.create(users_body)
-    slots_api.create(slots_body)
-    user_id = users_api.id
-    slot_id = slots_api.id
+    _, response_body = users_api.create(users_body)
+    user_id = response_body["id"]
+    _, response_body = slots_api.create(slots_body)
+    slot_id = response_body["id"]
     meetings_body = {
         "slotId": slot_id,
         "title": meeting_title,
@@ -90,15 +89,15 @@ def test_meetings_get_all(users_api, slots_api, meetings_api):
         ]
     }
     meetings_api.create(meetings_body)
+    meetings_id = response_body["id"]
 
     # Get all meetings
     response, response_body = meetings_api.get_all()
 
     # Extract previously created meeting from collection
-    meeting = get_entry_from_collection(response_body, meetings_api.id)
+    meeting = get_entry_from_collection(response_body, meetings_id)
 
     assert response.status_code == 200
-    assert meeting["id"] == meetings_api.id
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
     assert meeting["title"] == meeting_title
     assert meeting["startAt"] == slot_start_at
@@ -109,10 +108,10 @@ def test_meetings_get_all(users_api, slots_api, meetings_api):
 
 def test_meetings_delete(users_api, slots_api, meetings_api):
     # Prepare new meeting
-    users_api.create(users_body)
-    slots_api.create(slots_body)
-    user_id = users_api.id
-    slot_id = slots_api.id
+    _, response_body = users_api.create(users_body)
+    user_id = response_body["id"]
+    _, response_body = slots_api.create(slots_body)
+    slot_id = response_body["id"]
     meetings_body = {
         "slotId": slot_id,
         "title": meeting_title,
@@ -123,16 +122,17 @@ def test_meetings_delete(users_api, slots_api, meetings_api):
         ]
     }
     meetings_api.create(meetings_body)
+    meetings_id = response_body["id"]
 
     # Check that new meeting exists
     _, response_body = meetings_api.get_all()
-    meeting = get_entry_from_collection(response_body, meetings_api.id)
-    assert meeting["id"] == meetings_api.id
+    meeting = get_entry_from_collection(response_body, meetings_id)
+    assert meeting["title"] == meeting_title
 
     # Delete previously created meeting and check it
-    response = meetings_api.delete()
+    response = meetings_api.delete(meetings_id)
     _, response_body = meetings_api.get_all()
-    meeting = get_entry_from_collection(response_body, meetings_api.id)
+    meeting = get_entry_from_collection(response_body, meetings_id)
 
     assert response.status_code == 200
     assert meeting == "Entry not found"

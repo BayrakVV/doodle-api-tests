@@ -19,21 +19,21 @@ def base_url(request):
 def users_api(base_url):
     users_object = UsersApi(base_url)
     yield users_object
-    users_object.delete()
+    users_object.clean_up()
 
 
 @pytest.fixture()
 def slots_api(base_url):
     slots_object = SlotsApi(base_url)
     yield slots_object
-    slots_object.delete()
+    slots_object.clean_up()
 
 
 @pytest.fixture()
 def meetings_api(base_url):
     meetings_object = MeetingsApi(base_url)
     yield meetings_object
-    meetings_object.delete()
+    meetings_object.clean_up()
 
 
 @pytest.fixture()

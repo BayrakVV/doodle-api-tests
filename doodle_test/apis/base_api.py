@@ -8,7 +8,7 @@ class BaseApi(object):
         self.headers = {"Accept": "*/*"}
         self.base_address = base_address
         self.api_path = api_path
-        self.id = None
+        self.ids = []
         self.url = f"{self.base_address}/{self.api_path}"
 
     def request(self, request):
@@ -27,8 +27,7 @@ class BaseApi(object):
             json=payload
         )
         response, response_body = self.request(request)
-        if not self.id:
-            self.id = response_body["id"]
+        self.ids.append(response_body["id"])
         return response, response_body
 
     def get_all(self, page="", page_size="20000"):
@@ -39,18 +38,25 @@ class BaseApi(object):
         response, response_body = self.request(request)
         return response, response_body
 
-    def get(self):
+    def get(self, entity_id):
         request = requests.get(
-            url=f"{self.url}/{self.id}",
+            url=f"{self.url}/{entity_id}",
             headers=self.headers
         )
         response, response_body = self.request(request)
         return response, response_body
 
-    def delete(self):
+    def delete(self, entity_id):
         response = requests.delete(
-            url=f"{self.url}/{self.id}",
+            url=f"{self.url}/{entity_id}",
             headers=self.headers
         )
         return response
+
+    def clean_up(self):
+        for i in self.ids:
+            requests.delete(
+                url=f"{self.url}/{i}",
+                headers=self.headers
+            )
 
