@@ -1,4 +1,4 @@
-from doodle_test.utils.utils import get_entry
+from doodle_test.utils.utils import get_entry_from_collection
 
 name = "test_user"
 body = {
@@ -26,7 +26,7 @@ def test_users_get_by_id(users_api):
 def test_users_get_all(users_api):
     users_api.create(body)
     response, response_body = users_api.get_all()
-    user = get_entry(response_body, users_api.id)
+    user = get_entry_from_collection(response_body, users_api.id)
 
     assert response.status_code == 200
     assert user["name"] == name
@@ -36,14 +36,14 @@ def test_users_get_all(users_api):
 def test_users_delete(users_api):
     users_api.create(body)
     _, response_body = users_api.get_all()
-    user = get_entry(response_body, users_api.id)
+    user = get_entry_from_collection(response_body, users_api.id)
 
     assert user["name"] == name
     assert user["id"] == users_api.id
 
     response = users_api.delete()
     _, response_body = users_api.get_all()
-    user = get_entry(response_body, users_api.id)
+    user = get_entry_from_collection(response_body, users_api.id)
 
     assert response.status_code == 200
     assert user == "Record not found"
