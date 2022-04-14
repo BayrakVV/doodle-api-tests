@@ -15,7 +15,7 @@ To run tests you need:
 
 ## How to run tests
 
-### Run tests inside Docker container
+### Inside Docker container
 - To build a Docker image run in the root project directory:
 >$ docker build -t doodle_test .
 - Then start the container:
@@ -25,7 +25,7 @@ To run tests you need:
 - Or some specific one:
 >$ python3 -m pytest -lvv --url='http://qa-challenge:8080' test/doodle_test/tests/test_users.py::test_users_post
 
-### Run tests in the terminal (if you have python3.8 or higher installed)
+### In the terminal on your host (if you have python3.8 or higher installed)
 - Create new virtual environment: 
 >$ python3 -m venv <path_to_your_venvs>/doodle_venv
 - Activate your virtual environment:
