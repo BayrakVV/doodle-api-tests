@@ -31,7 +31,7 @@ To run tests you need:
 - Activate your virtual environment:
 >$ source <path_to_your_venvs>/doddle_venv/bin/activate
 - To install required python dependencies in the project root directory run:
->$pip install -r requirements.txt
+>$ pip3 install -r requirements.txt
 - To run all tests in the project root directory run:
 >$ python3 -m pytest -lvv --url='http://qa-challenge:8080' test/doodle_test/tests/
 - Run specific test:
