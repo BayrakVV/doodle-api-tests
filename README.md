@@ -33,6 +33,6 @@ To run tests you need:
 - To install required python dependencies in the project root directory run:
 >$ pip3 install -r requirements.txt
 - To run all tests in the project root directory run:
->$ python3 -m pytest -lvv --url='http://qa-challenge:8080' test/doodle_test/tests/
+>$ python3 -m pytest -lvv doodle_test/tests/
 - Run specific test:
->$ python3 -m pytest -lvv --url='http://qa-challenge:8080' test/doodle_test/tests/test_users.py::test_users_post
+>$ python3 -m pytest -lvv doodle_test/tests/test_users.py::test_users_post
