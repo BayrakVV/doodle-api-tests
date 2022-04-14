@@ -27,9 +27,9 @@ To run tests you need:
 
 ### Run tests in the terminal (if you have python3.8 or higher installed)
 - Create new virtual environment: 
->$ python3 -m venv <path_to_your_venvs>/doddle_venv
+>$ python3 -m venv <path_to_your_venvs>/doodle_venv
 - Activate your virtual environment:
->$ source <path_to_your_venvs>/doddle_venv/bin/activate
+>$ source <path_to_your_venvs>/doodle_venv/bin/activate
 - To install required python dependencies in the project root directory run:
 >$ pip3 install -r requirements.txt
 - To run all tests in the project root directory run:
