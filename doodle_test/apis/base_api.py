@@ -27,10 +27,11 @@ class BaseApi(object):
             json=payload
         )
         response, response_body = self.request(request)
-        self.id = response_body["id"]
+        if not self.id:
+            self.id = response_body["id"]
         return response, response_body
 
-    def get_collection(self, page="", page_size=""):
+    def get_all(self, page="", page_size="20000"):
         request = requests.get(
             url=f"{self.url}?page={page}&page_size={page_size}",
             headers=self.headers
@@ -47,9 +48,9 @@ class BaseApi(object):
         return response, response_body
 
     def delete(self):
-        request = requests.delete(
+        response = requests.delete(
             url=f"{self.url}/{self.id}",
             headers=self.headers
         )
-        response, response_body = self.request(request)
-        return response, response_body
+        return response
+
