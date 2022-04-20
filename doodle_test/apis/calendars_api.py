@@ -1,6 +1,6 @@
 import requests
 
-from doodle_test.apis.base_api import BaseApi
+from doodle_test.apis.base_api import BaseApi, handle_response
 
 
 class CalendarsApi(BaseApi):
@@ -15,5 +15,5 @@ class CalendarsApi(BaseApi):
             url=f"{self.base_address}/calendars?month={month}",
             headers=self.headers
         )
-        response, response_body = self.request(request)
+        response, response_body = handle_response(request)
         return response, response_body
