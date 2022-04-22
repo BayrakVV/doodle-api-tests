@@ -56,10 +56,10 @@ def test_meetings_post(prepare_meeting):
 def test_meetings_get_by_id(prepare_meeting):
     # Prepare new meeting
     user_id, _, response_body, meetings_api = prepare_meeting
-    meetings_id = response_body["id"]
+    meeting_id = response_body["id"]
 
     # Get meeting by id
-    response, response_body = meetings_api.get(meetings_id)
+    response, response_body = meetings_api.get(meeting_id)
 
     assert response.status_code == 200
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
@@ -73,13 +73,13 @@ def test_meetings_get_by_id(prepare_meeting):
 def test_meetings_get_all(prepare_meeting):
     # Prepare new meeting
     user_id, _, response_body, meetings_api = prepare_meeting
-    meetings_id = response_body["id"]
+    meeting_id = response_body["id"]
 
     # Get all meetings
     response, response_body = meetings_api.get_all()
 
     # Extract previously created meeting from collection
-    meeting = get_entry_from_collection(response_body, meetings_id)
+    meeting = get_entry_from_collection(response_body, meeting_id)
 
     assert response.status_code == 200
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
@@ -93,17 +93,17 @@ def test_meetings_get_all(prepare_meeting):
 def test_meetings_delete(prepare_meeting):
     # Prepare new meeting
     _, _, response_body, meetings_api = prepare_meeting
-    meetings_id = response_body["id"]
+    meeting_id = response_body["id"]
 
     # Check that new meeting exists
     _, response_body = meetings_api.get_all()
-    meeting = get_entry_from_collection(response_body, meetings_id)
+    meeting = get_entry_from_collection(response_body, meeting_id)
     assert meeting["title"] == meeting_title
 
     # Delete previously created meeting and check it
-    response = meetings_api.delete(meetings_id)
+    response = meetings_api.delete(meeting_id)
     _, response_body = meetings_api.get_all()
-    meeting = get_entry_from_collection(response_body, meetings_id)
+    meeting = get_entry_from_collection(response_body, meeting_id)
 
     assert response.status_code == 200
     assert meeting == "Entry not found"
