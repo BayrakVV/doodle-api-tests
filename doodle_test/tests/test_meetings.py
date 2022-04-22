@@ -1,3 +1,5 @@
+import pytest
+
 from doodle_test.utils.utils import get_entry_from_collection
 
 user_name = "test_user"
@@ -13,7 +15,8 @@ slots_body = {
 }
 
 
-def test_meetings_post(users_api, slots_api, meetings_api):
+@pytest.fixture()
+def prepare_meeting(users_api, slots_api, meetings_api):
     # Prepare data for meetings POST request
     _, response_body = users_api.create(users_body)
     user_id = response_body["id"]
@@ -34,6 +37,13 @@ def test_meetings_post(users_api, slots_api, meetings_api):
     # Send request
     response, response_body = meetings_api.create(meetings_body)
 
+    return user_id, response, response_body, meetings_api
+
+
+def test_meetings_post(prepare_meeting):
+    # Prepare new meeting
+    user_id, response, response_body, _ = prepare_meeting
+
     assert response.status_code == 201
     # assert response_body["slotId"] == slot_id BUG: there is no slotId in the response
     assert response_body["title"] == meeting_title
@@ -43,22 +53,9 @@ def test_meetings_post(users_api, slots_api, meetings_api):
     assert response_body["participants"][0]["name"] == user_name
 
 
-def test_meetings_get_by_id(users_api, slots_api, meetings_api):
+def test_meetings_get_by_id(prepare_meeting):
     # Prepare new meeting
-    _, response_body = users_api.create(users_body)
-    user_id = response_body["id"]
-    _, response_body = slots_api.create(slots_body)
-    slot_id = response_body["id"]
-    meetings_body = {
-        "slotId": slot_id,
-        "title": meeting_title,
-        "participants": [
-            {
-                "id": user_id
-            }
-        ]
-    }
-    meetings_api.create(meetings_body)
+    user_id, _, response_body, meetings_api = prepare_meeting
     meetings_id = response_body["id"]
 
     # Get meeting by id
@@ -73,22 +70,9 @@ def test_meetings_get_by_id(users_api, slots_api, meetings_api):
     assert response_body["participants"][0]["name"] == user_name
 
 
-def test_meetings_get_all(users_api, slots_api, meetings_api):
+def test_meetings_get_all(prepare_meeting):
     # Prepare new meeting
-    _, response_body = users_api.create(users_body)
-    user_id = response_body["id"]
-    _, response_body = slots_api.create(slots_body)
-    slot_id = response_body["id"]
-    meetings_body = {
-        "slotId": slot_id,
-        "title": meeting_title,
-        "participants": [
-            {
-                "id": user_id
-            }
-        ]
-    }
-    meetings_api.create(meetings_body)
+    user_id, _, response_body, meetings_api = prepare_meeting
     meetings_id = response_body["id"]
 
     # Get all meetings
@@ -106,22 +90,9 @@ def test_meetings_get_all(users_api, slots_api, meetings_api):
     assert meeting["participants"][0]["name"] == user_name
 
 
-def test_meetings_delete(users_api, slots_api, meetings_api):
+def test_meetings_delete(prepare_meeting):
     # Prepare new meeting
-    _, response_body = users_api.create(users_body)
-    user_id = response_body["id"]
-    _, response_body = slots_api.create(slots_body)
-    slot_id = response_body["id"]
-    meetings_body = {
-        "slotId": slot_id,
-        "title": meeting_title,
-        "participants": [
-            {
-                "id": user_id
-            }
-        ]
-    }
-    meetings_api.create(meetings_body)
+    _, _, response_body, meetings_api = prepare_meeting
     meetings_id = response_body["id"]
 
     # Check that new meeting exists
