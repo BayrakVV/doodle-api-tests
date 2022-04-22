@@ -8,6 +8,7 @@ To run tests you need:
 - Docker Desktop installed (or Docker Engine for Linux)
 - [Doddle's backend application](https://github.com/DoodleScheduling/qa-backend-challenge)
 - Python >= 3.8 if you want to play with tests
+- [Allure CLI](https://docs.qameta.io/allure/#_installing_a_commandline) suitable for your environment if you want to see test report sample 
 
 ### Setup
 - Clone Doddle's backend application to your machine an launch it
@@ -33,6 +34,8 @@ To run tests you need:
 - To install required python dependencies in the project root directory run:
 >$ pip3 install -r requirements.txt
 - To run all tests in the project root directory run:
->$ python3 -m pytest -lvv doodle_test/tests/
+>$ python3 -m pytest -lvv doodle_test/tests/ --alluredir=/tmp/allure_results --clean-alluredir
 - Run specific test:
->$ python3 -m pytest -lvv doodle_test/tests/test_users.py::test_users_post
+>$ python3 -m pytest -lvv doodle_test/tests/test_users.py::test_users_post --alluredir=/tmp/allure_results --clean-alluredir
+- To get Allure report (will be opened in your default browser):
+>$ allure serve /tmp/allure_results
